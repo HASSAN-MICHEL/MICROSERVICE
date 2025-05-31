@@ -1,0 +1,2 @@
+il faut ajouter une sorte de system de facturation pour le systeme(lorsque la vente est totalement validé par le client) , 
+ajouter une option de retour en stock lorsque un produit est annulé ou sortie de la vente ou lorsque une vente est totalement annulée 

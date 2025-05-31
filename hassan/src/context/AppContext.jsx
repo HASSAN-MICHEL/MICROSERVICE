@@ -6,6 +6,7 @@ export const AppContext = createContext();
 export const AppProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
   const [sales, setSales] = useState([]);
+  const[reports, setReports] = useState([]);  
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -33,6 +34,17 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+const fetchReports = async () => {
+    setLoading(true);
+    try {
+      const response = await api.get('/reports');
+      setReports(response.data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
     fetchProducts();
     fetchSales();

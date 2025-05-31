@@ -31,13 +31,13 @@ const DailyReport = () => {
           onChange={handleDateChange}
         />
         <button onClick={generateReport} className="btn btn-primary">
-          Generate
+          Generé
         </button>
       </div>
 
       {report && (
         <div>
-          <h2>Sales for {date}</h2>
+          <h2>Vente du  {date}</h2>
           <table className="table">
             <thead>
               <tr>
@@ -59,14 +59,14 @@ const DailyReport = () => {
             </tbody>
           </table>
 
-          <h2>Stock Movements</h2>
+          <h2>Historique mouvement</h2>
           <table className="table">
             <thead>
               <tr>
                 <th>Product</th>
-                <th>Sold</th>
-                <th>Returned</th>
-                <th>Net</th>
+                <th>Vendu</th>
+                <th>Retour</th>
+                <th>en stock</th>
               </tr>
             </thead>
             <tbody>
@@ -87,3 +87,4 @@ const DailyReport = () => {
 };
 
 export default DailyReport;
+

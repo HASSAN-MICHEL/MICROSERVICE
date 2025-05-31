@@ -1,40 +1,208 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { AppContext } from '../../context/AppContext.jsx';
-import { Link } from 'react-router-dom';
-import SaleItem from './SaleItem.jsx';
+import { FaPlus, FaShoppingBag, FaSearch, FaFilter, FaSync } from 'react-icons/fa';
+import { Container, Button, Table, InputGroup, Form, Row, Col, Alert, Spinner, Card, Modal } from 'react-bootstrap';
+import SaleForm from './SaleForm.jsx'; // Importez le composant SaleForm
+import SaleItem from './SaleItem.jsx'
 
 const SaleList = () => {
-  const { sales, loading, error } = useContext(AppContext);
+  const { sales, loading, error, fetchSales } = useContext(AppContext);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [showSaleForm, setShowSaleForm] = useState(false); // État pour contrôler l'affichage du formulaire
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  const filteredSales = sales.filter(sale => {
+    const matchesSearch = sale.client_name?.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                         sale.id.toString().includes(searchTerm);
+    const matchesStatus = statusFilter === 'all' || sale.status === statusFilter;
+    return matchesSearch && matchesStatus;
+  });
+
+  const getSalesCountByStatus = (status) => {
+    return sales.filter(s => s.status === status).length;
+  };
+
+  // Fonction pour fermer le modal et rafraîchir la liste
+  const handleClose = () => {
+    setShowSaleForm(false);
+    fetchSales(); // Rafraîchir la liste après une nouvelle vente
+  };
+
+  if (loading) return (
+    <Container className="text-center py-5">
+      <Spinner animation="border" variant="primary" />
+      <p className="mt-3">Chargement des ventes...</p>
+    </Container>
+  );
+
+  if (error) return (
+    <Container>
+      <Alert variant="danger">
+        Erreur lors du chargement des ventes: {error}
+        <Button variant="outline-danger" onClick={fetchSales} className="ms-3">
+          <FaSync /> Réessayer
+        </Button>
+      </Alert>
+    </Container>
+  );
 
   return (
-    <div>
-      <div className="header">
-        <h1>Sales</h1>
-        <Link to="/sales/new" className="btn btn-primary">
-        Nouvelle Vente
-        </Link>
-      </div>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Client</th>
-            <th>Date</th>
-            <th>Total</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {sales.map((sale) => (
-            <SaleItem key={sale.id} sale={sale} />
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <Container className="py-4">
+      <Row className="mb-4 align-items-center">
+        <Col md={6}>
+          <h2 className="mb-0">
+            <FaShoppingBag className="me-2 text-primary" />
+            Historique des Ventes
+          </h2>
+        </Col>
+        <Col md={6} className="text-md-end">
+          <Button 
+            variant="primary" 
+            className="ms-2"
+            onClick={() => setShowSaleForm(true)} // Ouvrir le modal au lieu de naviguer
+          >
+            <FaPlus className="me-2" />
+            Nouvelle Vente
+          </Button>
+        </Col>
+      </Row>
+
+      {/* Filtres et statistiques */}
+      <Card className="mb-4 shadow-sm">
+        <Card.Body>
+          <Row>
+            <Col md={6} className="mb-3 mb-md-0">
+              <InputGroup>
+                <InputGroup.Text>
+                  <FaSearch />
+                </InputGroup.Text>
+                <Form.Control
+                  type="text"
+                  placeholder="Rechercher par client ou n° de vente..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </InputGroup>
+            </Col>
+            <Col md={3}>
+              <InputGroup>
+                <InputGroup.Text>
+                  <FaFilter />
+                </InputGroup.Text>
+                <Form.Select
+                  value={statusFilter}
+                  onChange={(e) => setStatusFilter(e.target.value)}
+                >
+                  <option value="all">Tous les statuts</option>
+                  <option value="pending">En attente</option>
+                  <option value="confirmed">Complétées</option>
+                  <option value="cancelled">Annulées</option>
+                </Form.Select>
+              </InputGroup>
+            </Col>
+            <Col md={3}>
+              <Button variant="outline-secondary" onClick={fetchSales} className="w-100">
+                <FaSync /> Actualiser
+              </Button>
+            </Col>
+          </Row>
+        </Card.Body>
+      </Card>
+
+      {/* Statistiques */}
+      <Row className="mb-4">
+        <Col md={4}>
+          <Card className="text-center shadow-sm">
+            <Card.Body>
+              <Card.Title>Total Ventes</Card.Title>
+              <Card.Text className="display-6 text-primary">
+                {sales.length}
+              </Card.Text>
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col md={4}>
+          <Card className="text-center shadow-sm">
+            <Card.Body>
+              <Card.Title>Complétées</Card.Title>
+              <Card.Text className="display-6 text-success">
+                {getSalesCountByStatus('confirmed')}
+              </Card.Text>
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col md={4}>
+          <Card className="text-center shadow-sm">
+            <Card.Body>
+              <Card.Title>Annulées</Card.Title>
+              <Card.Text className="display-6 text-danger">
+                {getSalesCountByStatus('cancelled')}
+              </Card.Text>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+
+      {/* Liste des ventes */}
+      {filteredSales.length === 0 ? (
+        <Card className="text-center py-5 shadow-sm">
+          <Card.Body>
+            <FaShoppingBag size={48} className="text-muted mb-3" />
+            <h4>Aucune vente trouvée</h4>
+            <p className="text-muted">Essayez de modifier vos critères de recherche</p>
+            <Button 
+              variant="primary" 
+              className="mt-3"
+              onClick={() => setShowSaleForm(true)}
+            >
+              <FaPlus className="me-2" />
+              Créer une nouvelle vente
+            </Button>
+          </Card.Body>
+        </Card>
+      ) : (
+        <div className="table-responsive">
+          <Table hover className="mb-0">
+            <thead className="table-light">
+              <tr>
+                <th>N° Vente</th>
+                <th>Client</th>
+                <th>Date</th>
+                <th>Montant( FCFA)</th>
+                <th>Statut</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredSales.map((sale) => (
+                <SaleItem key={sale.id} sale={sale} />
+              ))}
+            </tbody>
+          </Table>
+        </div>
+      )}
+
+      {/* Modal pour le formulaire de vente */}
+      <Modal 
+        show={showSaleForm} 
+        onHide={handleClose}
+        size="xl"
+        fullscreen="lg-down"
+        backdrop="static"
+      >
+        <Modal.Header closeButton className="bg-primary text-white">
+          <Modal.Title>
+            <FaShoppingBag className="me-2" />
+            Nouvelle Vente
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <SaleForm 
+            onClose={handleClose} // Passez la fonction de fermeture au formulaire
+          />
+        </Modal.Body>
+      </Modal>
+    </Container>
   );
 };
 

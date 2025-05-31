@@ -9,15 +9,15 @@ const StockReport = () => {
 
   return (
     <div>
-      <h1>Stock Report</h1>
+      <h1>Rapport Stock</h1>
       <table className="table">
         <thead>
           <tr>
-            <th>Product</th>
-            <th>Category</th>
-            <th>Price</th>
+            <th>Produit</th>
+            <th>Categories</th>
+            <th>Prix </th>
             <th>Stock</th>
-            <th>Unit</th>
+            <th>Unité</th>
           </tr>
         </thead>
         <tbody>
