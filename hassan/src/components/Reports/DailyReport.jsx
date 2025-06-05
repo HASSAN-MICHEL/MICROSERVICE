@@ -1,11 +1,11 @@
-import React, { useState, useContext } from 'react';
+import { useState,  } from 'react';
 import api from '../../services/api.js';
-import { AppContext } from '../../context/AppContext.jsx';
+// import { AppContext } from '../../context/AppContext.jsx';
 
 const DailyReport = () => {
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   const [report, setReport] = useState(null);
-  const { fetchSales } = useContext(AppContext);
+  // const { fetchSales } = useContext(AppContext);
 
   const handleDateChange = (e) => {
     setDate(e.target.value);
@@ -21,16 +21,22 @@ const DailyReport = () => {
   };
 
   return (
-    <div>
-      <h1>Daily Report</h1>
-      <div className="form-group">
-        <label>Date</label>
+    <div className='flex flex-col gap-4'>
+      <div>
+      <h1 className='!text-gray-500'>Daily Report</h1>
+      <p className='md:text-lg'>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nobis obcaecati non solut.</p>
+      </div>
+      <div className="form-group f rounded-md bg-white shadow-md shadow-black/40 flex flex-col gap-4 items-center p-2 w-[fit-content] px-4">
+        <div className="space-x-3">
+        <label>Date :</label>
         <input
           type="date"
           value={date}
           onChange={handleDateChange}
+          className='border bg-gray-200 cursor-pointer  outline-0 p-2 rounded-md active:!border-1 active:!border-blue-600'
         />
-        <button onClick={generateReport} className="btn btn-primary">
+        </div>
+        <button onClick={generateReport} className="btn btn-primary w-full">
           Generé
         </button>
       </div>

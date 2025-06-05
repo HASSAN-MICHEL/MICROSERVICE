@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Table, Button, Modal, Form, Card, Badge, Spinner, Alert, Pagination } from "react-bootstrap";
+import { Table, Button, Modal, Form, Card, Spinner, Alert, Pagination } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FaPlus, FaEdit, FaTrash, FaUtensils, FaWineGlassAlt, FaSearch, FaShoppingCart } from "react-icons/fa";
 

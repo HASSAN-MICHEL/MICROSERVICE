@@ -366,20 +366,20 @@
 // export default SaleForm;
 
 
-import React, { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AppContext } from '../../context/AppContext.jsx';
 import api from '../../services/api.js';
 import Cart from './Cart.jsx';
 import { 
-  FaSave, FaArrowLeft, FaCheck, FaTimes, FaPlus, 
-  FaUser, FaShoppingBag, FaSearch, FaDollarSign,
-  FaBox, FaTrashAlt, FaEdit, FaInfoCircle
+   FaArrowLeft, FaCheck, FaTimes, FaPlus, 
+  FaUser, FaShoppingBag, FaSearch,
+  FaBox, FaInfoCircle
 } from 'react-icons/fa';
 import { 
   Container, Row, Col, Form, Button, Card, Table, 
   InputGroup, Badge, Alert, Spinner, Modal,
-  Tooltip, OverlayTrigger, Toast
+   Toast
 } from 'react-bootstrap';
 
 const SaleForm = () => {
@@ -424,7 +424,7 @@ const SaleForm = () => {
           })));
         } catch (error) {
           console.error('Error fetching sale:', error);
-          setError('Erreur lors du chargement de la vente');
+          setError('Erreur lors du chargement de la vente ');
         } finally {
           setLoading(false);
         }
@@ -587,7 +587,7 @@ const SaleForm = () => {
       setTimeout(() => navigate('/sales'), 1500);
     } catch (error) {
       console.error('Error cancelling sale:', error);
-      setError(error.response?.data?.message || 'Erreur lors de l\'annulation de la vente');
+      setError(error.response?.data?.message || `'Erreur lors de l'annulation de la vente`);
     } finally {
       setLoading(false);
       setShowCancelModal(false);
@@ -628,7 +628,7 @@ const SaleForm = () => {
 
       {/* Error Alert */}
       {error && (
-        <Alert variant="danger" className="mb-4" onClose={() => setError(null)} dismissible>
+        <Alert variant="danger" className="mb-4" onClose={() => setError(null)}  dismissible>
           <FaInfoCircle className="me-2" />
           {error}
         </Alert>
