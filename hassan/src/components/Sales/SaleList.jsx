@@ -1,6 +1,6 @@
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { AppContext } from '../../context/AppContext.jsx';
-import { FaPlus, FaShoppingBag, FaSearch, FaFilter, FaSync } from 'react-icons/fa';
+import { FaPlus, FaShoppingBag, FaSearch, FaFilter, FaSync, FaShoppingBasket } from 'react-icons/fa';
 import { Container, Button, Table, InputGroup, Form, Row, Col, Alert, Spinner, Card, Modal } from 'react-bootstrap';
 import SaleForm from './SaleForm.jsx'; // Importez le composant SaleForm
 import SaleItem from './SaleItem.jsx'
@@ -48,17 +48,16 @@ const SaleList = () => {
 
   return (
     <Container className="py-4">
-      <Row className="mb-4 align-items-center">
-        <Col md={6}>
-          <h2 className="mb-0">
-            <FaShoppingBag className="me-2 text-primary" />
+      <Row className="mb-4 d-flex gap-4 md:!gap-0 align-items-center justify-content-between">
+        <Col md={6} className='!w-[fit-content] '> 
+          <h2 className="mb-0  !w-full uppercase flex items-center !text-persimmon !font-bold">
+            <FaShoppingBag className="me-2 text-persimmon  " />
             Historique des Ventes
           </h2>
         </Col>
-        <Col md={6} className="text-md-end">
+        <Col md={6} className="text-md-end flex items-center justify-content-end !w-full md:!w-[fit-content] ">
           <Button 
-            variant="primary" 
-            className="ms-2"
+            className="ms-2 !flex items-center !py-2 !px-6 !border-0 !bg-persimmon shadow-md !shadow-black/60 "
             onClick={() => setShowSaleForm(true)} // Ouvrir le modal au lieu de naviguer
           >
             <FaPlus className="me-2" />
@@ -68,10 +67,10 @@ const SaleList = () => {
       </Row>
 
       {/* Filtres et statistiques */}
-      <Card className="mb-4 shadow-sm">
-        <Card.Body>
-          <Row>
-            <Col md={6} className="mb-3 mb-md-0">
+      <Card className="mb-4 !bg-transparent border-0 shadow-sm">
+        <Card.Body className=''>
+          <Row >
+            <Col md={6} className="mb-3 mb-md-0 ">
               <InputGroup>
                 <InputGroup.Text>
                   <FaSearch />
@@ -84,7 +83,8 @@ const SaleList = () => {
                 />
               </InputGroup>
             </Col>
-            <Col md={3}>
+            <div className="d-flex justify-content-between items-center mt-2">
+            <Col md={3} >
               <InputGroup>
                 <InputGroup.Text>
                   <FaFilter />
@@ -101,30 +101,31 @@ const SaleList = () => {
               </InputGroup>
             </Col>
             <Col md={3}>
-              <Button variant="outline-secondary" onClick={fetchSales} className="w-100">
+              <Button  onClick={fetchSales} className="w-[fit-content] !bg-red-500 border-0 shadow-md shadow-black/60 !p-2 !px-8 d-flex gap-3 items-center  ">
                 <FaSync /> Actualiser
               </Button>
             </Col>
+          </div>
           </Row>
         </Card.Body>
       </Card>
 
       {/* Statistiques */}
-      <Row className="mb-4">
+      <Row className="mb-4  d-flex  gap-2 md:!gap-0">
         <Col md={4}>
-          <Card className="text-center shadow-sm">
-            <Card.Body>
-              <Card.Title>Total Ventes</Card.Title>
-              <Card.Text className="display-6 text-primary">
+          <Card className="text-center  !bg-persimmon/10 !shadow-md !shadow-black/30 border-0 hover:translate-y-[-5px] transition-all duration-500 ">
+            <Card.Body className=''>
+              <Card.Title className='text-persimmon'>Total Ventes</Card.Title>
+              <Card.Text className="display-6 text-persimmon">
                 {sales.length}
               </Card.Text>
             </Card.Body>
           </Card>
         </Col>
         <Col md={4}>
-          <Card className="text-center shadow-sm">
+          <Card className="text-center !bg-green-50 !shadow-md !shadow-black/30 border-0 hover:translate-y-[-5px] transition-all duration-500">
             <Card.Body>
-              <Card.Title>Complétées</Card.Title>
+              <Card.Title className='text-success'>Complétées</Card.Title>
               <Card.Text className="display-6 text-success">
                 {getSalesCountByStatus('confirmed')}
               </Card.Text>
@@ -132,9 +133,9 @@ const SaleList = () => {
           </Card>
         </Col>
         <Col md={4}>
-          <Card className="text-center shadow-sm">
+          <Card className="text-center !bg-red-50 !shadow-md !shadow-black/30 border-0 hover:translate-y-[-5px] transition-all duration-500">
             <Card.Body>
-              <Card.Title>Annulées</Card.Title>
+              <Card.Title className='text-danger'>Annulées</Card.Title>
               <Card.Text className="display-6 text-danger">
                 {getSalesCountByStatus('cancelled')}
               </Card.Text>
@@ -145,17 +146,17 @@ const SaleList = () => {
 
       {/* Liste des ventes */}
       {filteredSales.length === 0 ? (
-        <Card className="text-center py-5 shadow-sm">
-          <Card.Body>
-            <FaShoppingBag size={48} className="text-muted mb-3" />
-            <h4>Aucune vente trouvée</h4>
+        <Card className="text-center py-5 !shadow-md !border-0 shadow-black/20 ">
+          <Card.Body className='d-flex flex-column items-center '>
+            <FaShoppingBasket size={100} className="text-orange-300 rotate-12 mb-3" />
+            <h1 className='!text-2xl md:!text-3xl lg:!text-4xl'>Aucune vente trouvée</h1>
             <p className="text-muted">Essayez de modifier vos critères de recherche</p>
             <Button 
               variant="primary" 
-              className="mt-3"
+              className="mt-3 d-flex items-center p-2 !bg-persimmon !border-persimmon-dark px-4 animate-pulse shadow-md shadow-black/30 "
               onClick={() => setShowSaleForm(true)}
             >
-              <FaPlus className="me-2" />
+              <FaPlus className="me-2 " />
               Créer une nouvelle vente
             </Button>
           </Card.Body>
@@ -190,8 +191,8 @@ const SaleList = () => {
         fullscreen="lg-down"
         backdrop="static"
       >
-        <Modal.Header closeButton className="bg-primary text-white">
-          <Modal.Title>
+        <Modal.Header closeButton className="!bg-persimmon text-white  ">
+          <Modal.Title className='d-flex items-center '>
             <FaShoppingBag className="me-2" />
             Nouvelle Vente
           </Modal.Title>

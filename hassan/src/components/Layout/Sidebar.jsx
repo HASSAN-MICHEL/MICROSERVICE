@@ -2,12 +2,12 @@ import { Link, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
   FaHome, FaBoxes, FaShoppingCart, FaChartLine,
-  FaCog, FaUsers, FaSignOutAlt, FaTimes
+  FaCog, FaUsers, FaSignOutAlt
 } from 'react-icons/fa';
-import { Sun, ChartBarIncreasing } from 'lucide-react';
+import { Sun, SidebarClose } from 'lucide-react';
 import { useEffect } from 'react';
 
-const Sidebar = ({ collapsed, toggleCollapse, isSidebarOpen }) => {
+const Sidebar = ({ collapsed, toggleCollapse, isSidebarOpen  }) => {
   const location = useLocation();
 
   useEffect(() => {
@@ -23,18 +23,19 @@ const Sidebar = ({ collapsed, toggleCollapse, isSidebarOpen }) => {
   };
 
   const sidebarVisibilityClasses = `
+   
     fixed top-0 left-0 z-50 h-full overflow-y-auto
-    bg-primary text-white flex flex-col p-2 pt-3
-    transform transition-transform duration-300 ease-in-out
-    ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
-    lg:translate-x-0 lg:static
-    ${collapsed ? 'w-[80px]' : 'w-[300px]'}
+    !bg-persimmon text-white flex flex-col p-2 pt-3 !overflow-x-hidden
+    transform transition-transform duration-500 ease-in-out
+    ${isSidebarOpen  ? 'translate-x-0' : '-translate-x-full'}
+    lg:translate-x-0 lg:static 
+    ${collapsed ? 'w-[90px] ' : 'w-[300px]'}
   `;
 
   return (
     <>
       {/* Mobile Backdrop */}
-      {isSidebarOpen && (
+      {isSidebarOpen  && (
         <div
           className="fixed inset-0 z-30 bg-black bg-opacity-50 backdrop-blur-0 lg:hidden"
           onClick={() => toggleCollapse(false)}
@@ -42,7 +43,7 @@ const Sidebar = ({ collapsed, toggleCollapse, isSidebarOpen }) => {
       )}
 
       {/* Sidebar */}
-      <div className={sidebarVisibilityClasses}>
+      <div className={`${sidebarVisibilityClasses} !shadow-lg !shadow-black`}>
         {/* Header */}
         <div className="relative flex items-center justify-between mb-4 p-2 gap-2">
           {!collapsed ? (
@@ -57,10 +58,10 @@ const Sidebar = ({ collapsed, toggleCollapse, isSidebarOpen }) => {
           {/* Mobile-only close button */}
           <div className="flex justify-end lg:hidden">
             <button
-              className="text-white text-xl hover:text-yellow-400 p-2"
+              className="!text-white text-xl hover:!text-yellow-400 p-2"
               onClick={() => toggleCollapse(false)}
             >
-              <FaTimes />
+              <SidebarClose />
             </button>
           </div>
 
@@ -69,15 +70,15 @@ const Sidebar = ({ collapsed, toggleCollapse, isSidebarOpen }) => {
             className="text-white text-lg hover:text-yellow-400 transition-all duration-300 hidden lg:block"
             onClick={toggleCollapse}
           >
-            <ChartBarIncreasing
+            <SidebarClose
               className={`transition-transform duration-500 ${collapsed ? 'rotate-180' : ''}`}
             />
           </button>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 overflow-y-auto">
-          <ul className={`space-y-2 flex flex-col ${collapsed ? 'items-center' : 'items-start'} w-full`}>
+        <nav className="flex justify-content-center flex-1 overflow-y-auto">
+          <ul className={`space-y-2 d-flex flex-col ${collapsed ? 'justify-start ' : ''} w-full`}>
             <NavItem to="/" icon={<FaHome />} label="Tableau de bord" active={isActive('/')} collapsed={collapsed} />
             <NavItem to="/products" icon={<FaBoxes />} label="Gestion des produits" active={isActive('/products')} collapsed={collapsed} />
             <NavItem to="/sales" icon={<FaShoppingCart />} label="Gestion des ventes" active={isActive('/sales')} collapsed={collapsed} />
@@ -116,12 +117,12 @@ const Sidebar = ({ collapsed, toggleCollapse, isSidebarOpen }) => {
   );
 };
 
-const NavItem = ({ to, icon, label, active, collapsed }) => (
-  <li className="w-full">
+const NavItem = ({ to, icon, label, active, collapsed, className=''}) => (
+  <li className={` list-style-none  relative  left-[-20px] ${collapsed? '!w-[50px]': ''} ${className} `}>
     <Link
       to={to}
-      className={`flex items-center no-underline px-3 py-2 rounded hover:bg-white/20 transition-all duration-300 w-full ${
-        active ? 'bg-white text-primary font-bold' : 'text-white'
+      className={`flex items-center justify-content-start px-3 !no-underline py-2 rounded hover:bg-white/20 transition-all duration-300 w-full ${
+        active ? 'bg-white !text-persimmon   font-bold' : 'text-white'
       }`}
     >
       <span className={`text-xl ${collapsed ? 'mx-auto' : 'mr-3'}`}>{icon}</span>
@@ -133,7 +134,7 @@ const NavItem = ({ to, icon, label, active, collapsed }) => (
 Sidebar.propTypes = {
   collapsed: PropTypes.bool.isRequired,
   toggleCollapse: PropTypes.func.isRequired,
-  isSidebarOpen: PropTypes.bool.isRequired,
+  isSidebarOpen : PropTypes.bool.isRequired,
 };
 
 NavItem.propTypes = {
@@ -142,6 +143,7 @@ NavItem.propTypes = {
   label: PropTypes.string.isRequired,
   active: PropTypes.bool.isRequired,
   collapsed: PropTypes.bool.isRequired,
+  className: PropTypes.string,
 };
 
 export default Sidebar;

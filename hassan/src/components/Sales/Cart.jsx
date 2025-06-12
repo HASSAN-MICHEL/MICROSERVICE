@@ -55,9 +55,10 @@
 
 // // Nombre emballage (pour les bière) et nbre pallete dans la facture avec le nombre total de colie( = total casier + total palette)
 
-import React from 'react';
-import { Card, Button, Badge, Table, InputGroup, Form } from 'react-bootstrap';
-import { FaTrashAlt, FaCheck, FaTimes, FaEdit, FaBox, FaDollarSign } from 'react-icons/fa';
+import { Save, ShoppingBasket } from 'lucide-react';
+import { Card, Button, Badge, Table,  Form } from 'react-bootstrap';
+import { FaTrashAlt, FaCheck, FaTimes, } from 'react-icons/fa';
+import PropTypes from 'prop-types';
 
 const Cart = ({ 
   items = [], 
@@ -83,10 +84,10 @@ const Cart = ({
   const finalAmount = totalAmount + packagingAmount;
 
   return (
-    <Card className="shadow-sm sticky-top" style={{ top: '20px' }}>
-      <Card.Header className="bg-primary text-white">
+    <Card className="shadow-md shadow-black/20 sticky-top !border-persimmon" style={{ top: '20px' }}>
+      <Card.Header className="!bg-persimmon  text-white">
         <h5 className="mb-0 d-flex align-items-center">
-          <FaBox className="me-2" />
+          <ShoppingBasket className="me-2" />
           Panier
           {items.length > 0 && (
             <Badge bg="light" text="dark" className="ms-2">
@@ -98,11 +99,9 @@ const Cart = ({
       
       <Card.Body className="p-0">
         {items.length === 0 ? (
-          <div className="text-center py-4 text-muted">
-            Votre panier est vide
-            <div className="mt-2">
-              <FaBox size={48} className="opacity-25" />
-            </div>
+          <div className="text-center py-4 d-flex flex-col items-center justify-center  text-muted">
+              <ShoppingBasket size={78} className="opacity-25" />
+              Votre panier est vide
           </div>
         ) : (
           <div className="table-responsive" style={{ maxHeight: '300px', overflowY: 'auto' }}>
@@ -163,32 +162,31 @@ const Cart = ({
         {packagingIncluded && (
           <div className="d-flex justify-content-between mb-2">
             <span>Emballage:</span>
-            <span className="fw-semibold">{formatCurrency(packagingPrice)}</span>
+            <span className="fw-semibold text-persimmon-dark">{formatCurrency(packagingPrice)}</span>
           </div>
         )}
         
         {/* Subtotal */}
         <div className="d-flex justify-content-between mb-2">
           <span>Sous-total:</span>
-          <span>{formatCurrency(totalAmount)}</span>
+          <span className='text-persimmon-dark'>{formatCurrency(totalAmount)}</span>
         </div>
         
         {/* Total */}
         <div className="d-flex justify-content-between align-items-center mb-3">
           <h5 className="mb-0">Total:</h5>
-          <h4 className="mb-0 text-primary">
+          <h4 className="mb-0 !text-persimmon-dark">
             {formatCurrency(finalAmount)}
           </h4>
         </div>
         
         {/* Buttons */}
         <Button
-          variant="primary"
           type="submit"
-          className="w-100 mb-2"
+          className="w-100 mb-2 !bg-persimmon !border-persimmon shadow-md shadow-black/40 d-flex items-center justify-content-center py-2 "
           disabled={items.length === 0}
         >
-          <FaEdit className="me-2" />
+          <Save className="me-2" />
           {isEdit ? 'Mettre à jour' : 'Enregistrer'}
         </Button>
         
@@ -216,6 +214,27 @@ const Cart = ({
       </Card.Footer>
     </Card>
   );
+};
+Cart.propTypes = {
+  items: PropTypes.arrayOf(
+    PropTypes.shape({
+      product_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+      name: PropTypes.string,
+      price: PropTypes.number,
+      quantity: PropTypes.number,
+      maxQuantity: PropTypes.number,
+      category: PropTypes.string,
+    })
+  ),
+  onRemove: PropTypes.func,
+  onUpdateQuantity: PropTypes.func,
+  totalAmount: PropTypes.number,
+  saleStatus: PropTypes.string,
+  onConfirm: PropTypes.func,
+  onCancel: PropTypes.func,
+  isEdit: PropTypes.bool,
+  packagingIncluded: PropTypes.bool,
+  packagingPrice: PropTypes.number,
 };
 
 export default Cart;

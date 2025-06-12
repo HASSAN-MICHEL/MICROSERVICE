@@ -55,13 +55,13 @@ const DashboardPage = () => {
               <Card.Title>Graphique des Paiements</Card.Title>
               {/* Ici vous intégrerez un graphique avec Chart.js */}
               <div className="chart-placeholder" style={{ height: '300px' }}>
-                [Graphique des paiements]
+                [Graphique des paiements encore en construction]
               </div>
             </Card.Body>
           </Card>
         </Col>
         <Col md={4}>
-          <RecentPayments />
+          
         </Col>
       </Row>
     </div>

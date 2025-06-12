@@ -1,9 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
 import { 
-  FaChartLine, 
-  FaCalendarAlt, 
-  FaUtensils, 
   FaGlassCheers, 
   FaUsers, 
   FaBars, 
@@ -11,14 +8,12 @@ import {
   FaHome,
   FaUserCog,
   FaChartPie,
-  FaBell,
   FaCog
 } from "react-icons/fa";
 import { 
   Container, 
   Row, 
   Col, 
-  Nav, 
   Button, 
   Offcanvas, 
   Alert,
@@ -40,7 +35,6 @@ const Dashboard = () => {
   }, [location]);
 
   const handleMenuToggle = () => setShowMenu(!showMenu);
-  const handleNavigation = (path) => navigate(path);
   const handleLogout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");

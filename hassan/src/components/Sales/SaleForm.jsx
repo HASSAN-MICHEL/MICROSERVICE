@@ -382,6 +382,8 @@ import {
    Toast
 } from 'react-bootstrap';
 
+
+
 const SaleForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -608,7 +610,7 @@ const SaleForm = () => {
   );
 
   return (
-    <Container className="py-4">
+    <Container className="py-4 ">
       {/* Success Toast */}
       {success && (
         <Toast 
@@ -635,10 +637,10 @@ const SaleForm = () => {
       )}
 
       {/* Header */}
-      <Row className="mb-4 align-items-center">
+      <Row className="mb-4 align-items-center d-flex  items-center justify-content-between">
         <Col>
-          <h2 className="mb-0 d-flex align-items-center">
-            <FaShoppingBag className="me-3 text-primary" />
+          <h2 className="mb-0 d-flex align-items-center !text-persimmon">
+            <FaShoppingBag className="me-3 text-persimmon" />
             {id ? `Vente #${id}` : 'Nouvelle vente'}
             {id && sale.status === 'confirmed' && (
               <Badge bg="success" className="ms-3">
@@ -648,12 +650,12 @@ const SaleForm = () => {
           </h2>
           {id && (
             <small className="text-muted">
-              Créée le {new Date(sale.created_at).toLocaleDateString()}
+              Créé le {new Date(sale.created_at).toLocaleDateString()}
             </small>
           )}
         </Col>
         <Col className="text-end">
-          <Button variant="outline-secondary" onClick={() => navigate('/sales')}>
+          <Button variant="outline-secondary" className='d-flex !text-persimmon hover:!text-white items-center !border-persimmon hover:!bg-persimmon-light ' onClick={() => navigate('/sales')}>
             <FaArrowLeft className="me-2" />
             Retour aux ventes
           </Button>
@@ -661,12 +663,12 @@ const SaleForm = () => {
       </Row>
 
       <Form onSubmit={handleSubmit}>
-        <Row>
+        <Row >
           {/* Left Column - Client Info & Products */}
-          <Col lg={8}>
+          <Col lg={8} >
             {/* Client Information Card */}
-            <Card className="mb-4 shadow-sm border-0">
-              <Card.Header className="bg-primary text-white">
+            <Card className="mb-4 shadow-sm !border-persimmon">
+              <Card.Header className="!bg-persimmon text-white">
                 <h5 className="mb-0 d-flex align-items-center">
                   <FaUser className="me-2" />
                   Informations client
@@ -715,11 +717,11 @@ const SaleForm = () => {
             </Card>
 
             {/* Products Card */}
-            <Card className="shadow-sm border-0">
-              <Card.Header className="bg-primary text-white">
+            <Card className="shadow-sm !border-persimmon">
+              <Card.Header className="!bg-persimmon text-white">
                 <Row className="align-items-center">
                   <Col md={6}>
-                    <h5 className="mb-0 d-flex align-items-center">
+                    <h5 className="mb-3 md:!mb-0 d-flex align-items-center">
                       <FaBox className="me-2" />
                       Produits disponibles
                     </h5>
@@ -741,7 +743,7 @@ const SaleForm = () => {
               </Card.Header>
               <Card.Body className="p-0">
                 <div className="table-responsive" style={{ maxHeight: '400px', overflowY: 'auto' }}>
-                  <Table hover className="mb-0">
+                  <Table hover className="mb-0 !rounded-md">
                     <thead className="table-light" style={{ position: 'sticky', top: 0 }}>
                       <tr>
                         <th width="30%">Produit</th>

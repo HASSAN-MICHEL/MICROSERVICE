@@ -4,8 +4,8 @@ const { Pool } = pkg; // ✅ Déstructure `Pool` à partir de `pg`
 const pool = new Pool({
   user: "postgres",
   host: "localhost",
-  database: "vote",
-  password: "HASSAN237",
+  database: "drink_manager",
+  password: "EMJ",
   port: 5432,
 });
 

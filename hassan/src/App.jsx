@@ -8,6 +8,10 @@ import DailyReport from './components/Reports/DailyReport.jsx';
 import StockReport from './components/Reports/StockReport.jsx';
 import AppLayout from './components/Layout/AppLayout.jsx';
 import { useState } from 'react';
+import DashboardPage from './pages/DashboardPage.jsx';
+import User from './components/user.jsx';
+import Settings from './pages/settings.jsx'
+import Notifications from './pages/Notifications.jsx'
 
 function App() {
  const [collapsed, setCollapsed] = useState(false);
@@ -35,6 +39,7 @@ function App() {
           />
         }
       >
+        <Route path="/" element={<DashboardPage />} />
         <Route path="products" element={<ProductList />} />
         <Route path="products/new" element={<ProductForm />} />
         <Route path="products/:id/edit" element={<ProductForm />} />
@@ -43,6 +48,9 @@ function App() {
         <Route path="sales/:id" element={<SaleForm />} />
         <Route path="reports/daily" element={<DailyReport />} />
         <Route path="reports/stock" element={<StockReport />} />
+        <Route path="users" element={<User />} />
+        <Route path="settings" element={<Settings />} />
+        <Route path="notifications" element={<Notifications />} />
       </Route>
     </Routes>
   </Router>

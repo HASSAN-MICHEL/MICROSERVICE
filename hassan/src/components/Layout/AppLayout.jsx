@@ -8,6 +8,7 @@ const AppLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true); // for mobile
 
   const toggleCollapse = (forceClose = null) => {
+      console.log('Toggling sidebar'); // Add this
     if (window.innerWidth < 1024) {
       setIsSidebarOpen(forceClose === null ? !isSidebarOpen : forceClose);
     } else {
@@ -27,10 +28,10 @@ const AppLayout = () => {
       {/* Main content */}
       <div className="flex-1 flex flex-col overflow-hidden p-2 h-full">
         {/* Navbar */}
-        <Navbar toggleSidebar={toggleCollapse} />
+        <Navbar toggleSidebar={toggleCollapse} isSidebarOpen={isSidebarOpen} />
 
         {/* Page content */}
-        <main className="flex-1 overflow-y-auto rounded-md bg-gray-100 h-full p-3 mt-[10px]">
+        <main className="flex-1 overflow-y-auto rounded-md bg-persimmon/5 h-full p-3 mt-[10px]">
           <Outlet />
         </main>
       </div>
@@ -39,3 +40,4 @@ const AppLayout = () => {
 };
 
 export default AppLayout;
+

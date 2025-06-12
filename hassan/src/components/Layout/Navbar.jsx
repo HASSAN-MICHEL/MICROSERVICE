@@ -1,12 +1,13 @@
-import { useState } from "react";
-import { useLocation } from "react-router-dom";
-import { FaBars, FaBell, FaSearch } from "react-icons/fa";
+// import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { FaBell } from "react-icons/fa";
 import PropTypes from "prop-types";
+import {  SidebarOpen } from "lucide-react";
 
 const Navbar = ({ toggleSidebar }) => {
   const location = useLocation();
-  const [searchOpen, setSearchOpen] = useState(false);
-  const toggleSearch = () => setSearchOpen(!searchOpen);
+  // const [searchOpen, setSearchOpen] = useState(false);
+  // const toggleSearch = () => setSearchOpen(!searchOpen);
 
   // Define page titles based on routes
   const pageTitles = {
@@ -18,15 +19,19 @@ const Navbar = ({ toggleSidebar }) => {
     "/settings": "Paramètres",
   };
 
-  const activePageTitle = pageTitles[location.pathname] || "Hotel App";
+  const activePageTitle = pageTitles[location.pathname] || "Drink Manage";
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-primary !pl-4 rounded-sm absolute shadow-md w-full z-2">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-persimmon !pl-4 rounded-sm absolute shadow-md w-full z-2">
       <div className="container-fluid">
         {/* Sidebar toggle button for mobile */}
-      <button className="navbar-toggler me-2 d-lg-none" type="button" onClick={toggleSidebar}>
-        <FaBars />
-      </button>
+          <button 
+            onClick={toggleSidebar} 
+            className="block lg:hidden text-white mr-3"
+          >
+            <SidebarOpen size={24} />
+          </button>
+
 
         {/* Active Page Title */}
         <span className="navbar-brand pl-3 text-white fw-bold">{activePageTitle}</span>
@@ -34,7 +39,7 @@ const Navbar = ({ toggleSidebar }) => {
         {/* Search and Notifications */}
         <div className="d-flex flex-row-reverse align-items-center ms-auto gap-4">
           {/* Search Input */}
-          <div className="flex bg-gray-200 rounded-sm overflow-hidden">
+          {/* <div className="flex bg-gray-200 rounded-sm overflow-hidden">
             <input
               type="search"
               placeholder="Hotel app..."
@@ -46,11 +51,11 @@ const Navbar = ({ toggleSidebar }) => {
             >
               <FaSearch />
             </button>
-          </div>
+          </div> */}
 
           {/* Notification Icon */}
           <button className="btn btn-link text-white position-relative me-3">
-            <FaBell />
+              <Link to={'/notifications'} className="text-white" ><FaBell /></Link>
             <span className="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
           </button>
         </div>
@@ -61,7 +66,6 @@ const Navbar = ({ toggleSidebar }) => {
 
 Navbar.propTypes = {
   toggleSidebar: PropTypes.func.isRequired,
-  isSidebarOpen: PropTypes.bool.isRequired,
 };
 
 export default Navbar;

@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AppContext } from '../../context/AppContext.jsx';
 import api from '../../services/api.js';
-import { FaSave, FaArrowLeft, FaBoxOpen, FaTags, FaCoins, FaLayerGroup, FaWeight } from 'react-icons/fa';
+import { FaSave, FaBoxOpen, FaTags, FaCoins, FaLayerGroup, FaWeight } from 'react-icons/fa';
 import { Container, Form, Button, Row, Col, Card } from 'react-bootstrap';
+import { X } from 'lucide-react';
 
 const ProductForm = () => {
   const { id } = useParams();
@@ -52,18 +53,15 @@ const ProductForm = () => {
   };
 
   return (
-    <Container className="mt-4">
-      <Card className="shadow-sm">
-        <Card.Header className="bg-primary text-white">
+    <Container className="mt-4 ">
+      <Card className="shadow-lg border !shadow-black">
+        
+        <Card.Header className="!bg-persimmon text-white">
           <div className="d-flex justify-content-between align-items-center">
-            <h3 className="mb-0">
-              <FaBoxOpen className="me-2" />
+            <h3 className="mb-0 flex items-center">
+              <FaBoxOpen className="me-2 " />
               {id ? 'Modifier le Produit' : 'Ajouter un Nouveau Produit'}
             </h3>
-            <Button variant="light" onClick={() => navigate('/products')}>
-              <FaArrowLeft className="me-2" />
-              Retour
-            </Button>
           </div>
         </Card.Header>
         
@@ -73,8 +71,8 @@ const ProductForm = () => {
               {/* Nom du produit */}
               <Col md={6} className="mb-3">
                 <Form.Group>
-                  <Form.Label>
-                    <FaTags className="me-2 text-primary" />
+                  <Form.Label className='d-flex items-center font-bold !text-persimmon ' >
+                    <FaTags className="me-2 !text-persimmon" />
                     Nom du produit
                   </Form.Label>
                   <Form.Control
@@ -91,21 +89,22 @@ const ProductForm = () => {
               {/* Catégorie */}
               <Col md={6} className="mb-3">
                 <Form.Group>
-                  <Form.Label>
-                    <FaLayerGroup className="me-2 text-primary" />
+                  <Form.Label className='d-flex items-center font-bold !text-persimmon ' >
+                    <FaLayerGroup className="me-2 !text-persimmon" />
                     Catégorie
                   </Form.Label>
-                  <Form.Select
+                  <Form.Select 
+                  
                     name="category"
                     value={product.category}
                     onChange={handleChange}
                     required
                   >
-                    <option value="">Choisir une catégorie</option>
-                    <option value="bière">Bière</option>
-                    <option value="vin">Vin</option>
-                    <option value="spiritueux">Spiritueux</option>
-                    <option value="soft">Jus et Softs</option>
+                    <option className='bg-gray-300 !text-gray-800' value="">Choisir une catégorie</option>
+                    <option className='bg-gray-300 !text-gray-800' value="bière">Bière</option>
+                    <option className='bg-gray-300 !text-gray-800' value="vin">Vin</option>
+                    <option className='bg-gray-300 !text-gray-800' value="spiritueux">Spiritueux</option>
+                    <option className='bg-gray-300 !text-gray-800' value="soft">Jus et Softs</option>
                   </Form.Select>
                 </Form.Group>
               </Col>
@@ -113,8 +112,8 @@ const ProductForm = () => {
               {/* Prix unitaire */}
               <Col md={6} className="mb-3">
                 <Form.Group>
-                  <Form.Label>
-                    <FaCoins className="me-2 text-primary" />
+                  <Form.Label className='d-flex items-center font-bold !text-persimmon ' >
+                    <FaCoins className="me-2 !text-persimmon" />
                     Prix unitaire (FCFA)
                   </Form.Label>
                   <div className="input-group">
@@ -127,8 +126,9 @@ const ProductForm = () => {
                       min="0"
                       step="0.01"
                       placeholder="0.00"
+          
                     />
-                    <span className="input-group-text">FCFA</span>
+                    <span className="input-group-text !bg-persimmon text-white ">FCFA</span>
                   </div>
                 </Form.Group>
               </Col>
@@ -136,8 +136,8 @@ const ProductForm = () => {
               {/* Stock */}
               <Col md={6} className="mb-3">
                 <Form.Group>
-                  <Form.Label>
-                    <FaBoxOpen className="me-2 text-primary" />
+                  <Form.Label className='d-flex items-center font-bold !text-persimmon ' >
+                    <FaBoxOpen className="me-2 !text-persimmon" />
                     Quantité en stock
                   </Form.Label>
                   <Form.Control
@@ -155,28 +155,35 @@ const ProductForm = () => {
               {/* Unité de vente */}
               <Col md={6} className="mb-3">
                 <Form.Group>
-                  <Form.Label>
-                    <FaWeight className="me-2 text-primary" />
+                  <Form.Label className='d-flex items-center font-bold !text-persimmon ' >
+                    <FaWeight className="me-2 !text-persimmon" />
                     Unité de vente
                   </Form.Label>
-                  <Form.Select
+                  <Form.Select 
+                  
                     name="unit"
                     value={product.unit}
                     onChange={handleChange}
                     required
                   >
-                    <option value="">Sélectionner une unité</option>
-                    <option value="bouteille">Bouteille</option>
-                    <option value="casier-12">Casier 12</option>
-                    <option value="casier-24">Casier 24</option>
-                    <option value="palette">Palette</option>
+                    <option className='bg-gray-300 !text-gray-800' value="">Sélectionner une unité</option>
+                    <option className='bg-gray-300 !text-gray-800' value="bouteille">Bouteille</option>
+                    <option className='bg-gray-300 !text-gray-800' value="casier-12">Casier 12</option>
+                    <option className='bg-gray-300 !text-gray-800' value="casier-24">Casier 24</option>
+                    <option className='bg-gray-300 !text-gray-800' value="palette">Palette</option>
                   </Form.Select>
                 </Form.Group>
               </Col>
             </Row>
 
-            <div className="d-flex justify-content-end mt-4">
-              <Button variant="primary" type="submit" size="lg">
+            <div className="d-flex justify-content-end mt-4 gap-6">
+            <Button
+              className=" !flex items-center justify-content-center transition-all duration-300  border-0 hover:!bg-red-600 w-[150px] !bg-red-500 shadow-md shadow-black/40"
+               onClick={() => navigate('/products')}>
+              <X className="me-2" />
+              Annuler
+            </Button>
+              <Button variant="primary" type="submit" className='!flex  items-center gap-2 shadow-md !bg-persimmon !border-persimmon shadow-black/40' size="lg">
                 <FaSave className="me-2" />
                 {id ? 'Mettre à jour' : 'Enregistrer'}
               </Button>

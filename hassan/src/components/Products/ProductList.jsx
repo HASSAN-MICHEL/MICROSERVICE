@@ -40,18 +40,22 @@
 
 // export default ProductList;
 
-import React, { useContext, useState } from 'react';
+import  { useContext, useState } from 'react';
 import { AppContext } from '../../context/AppContext.jsx';
 import { Link } from 'react-router-dom';
-import ProductItem from './ProductItem.jsx';
+// import ProductItem from './ProductItem.jsx';
 import { 
   Container, Button, InputGroup, Form, 
   Row, Col, Card, Badge, Pagination,
-  Dropdown, Spinner, Alert
+  Dropdown, Spinner, Alert,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItemText
 } from 'react-bootstrap';
 import { 
   FaPlus, FaSearch, FaFilter, FaBoxOpen,
-  FaSort, FaSortUp, FaSortDown
+  FaSort, FaSortUp, FaSortDown,
+  FaEllipsisH
 } from 'react-icons/fa';
 
 const ProductList = () => {
@@ -117,39 +121,41 @@ const ProductList = () => {
   return (
     <Container className="py-4">
       {/* Header avec bouton d'ajout */}
-      <Row className="mb-4 align-items-center">
-        <Col md={6}>
-          <h2 className="mb-0 d-flex align-items-center">
-            <FaBoxOpen className="me-3 text-primary" />
+      <Row className="mb-4 d-flex w-full  justify-content-center items-center">
+        <Col md={6} className='!w-full '>
+          <h2 className="mb-0 d-flex align-items-center !font-bold uppercase !text-2xl lg:!text-3xl !text-gray-600">
+            <FaBoxOpen className="me-3 text-persimmon " />
             Inventaire des Produits
           </h2>
-          <small className="text-muted">
+          <small className="text-muted font-bold">
             {filteredProducts.length} produits trouvés
           </small>
         </Col>
-        <Col md={6} className="text-md-end">
-          <Button 
+        <Col md={6} className="text-md-end flex justify-content-end !w-full">
+          <Button  
             variant="primary" 
             as={Link}
             to="/products/new"
-            className="ms-2"
+            className="ms-2 d-flex !bg-persimmon !border-0 items-center !w-[200px] shadow-md shadow-black/30  !px-4 !py-2 gap-2 lg:!py-3 lg:!px-5 "
           >
-            <FaPlus className="me-2" />
+            <FaPlus  />
             Ajouter un produit
           </Button>
         </Col>
       </Row>
 
       {/* Filtres et recherche */}
-      <Card className="mb-4 shadow-sm">
+      <Card className="mb-4 !bg-transparent border-0 shadow-sm">
         <Card.Body>
-          <Row>
-            <Col md={6} className="mb-3 mb-md-0">
-              <InputGroup>
-                <InputGroup.Text>
+          <Row >
+          <div className="flex flex-col lg:flex-row ">
+            <Col md={6} className="mb-3 mb-md-0 ">
+              <InputGroup >
+                <InputGroup.Text className='!bg-persimmon border !border-persimmon ' >
                   <FaSearch />
                 </InputGroup.Text>
                 <Form.Control
+                className='!border-persimmon'
                   type="text"
                   placeholder="Rechercher par nom ou catégorie..."
                   value={searchTerm}
@@ -160,78 +166,81 @@ const ProductList = () => {
                 />
               </InputGroup>
             </Col>
-            <Col md={3}>
-              <Dropdown>
-                <Dropdown.Toggle variant="outline-secondary" id="category-filter">
-                  <FaFilter className="me-2" />
-                  {categoryFilter === 'all' ? 'Toutes catégories' : categoryFilter}
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  <Dropdown.Item onClick={() => setCategoryFilter('all')}>
-                    Toutes catégories
-                  </Dropdown.Item>
-                  {categories.map(category => (
-                    <Dropdown.Item 
-                      key={category} 
-                      onClick={() => setCategoryFilter(category)}
-                    >
-                      {category}
-                    </Dropdown.Item>
-                  ))}
-                </Dropdown.Menu>
-              </Dropdown>
-            </Col>
-            <Col md={3}>
-              <Dropdown>
-                <Dropdown.Toggle variant="outline-secondary" id="sort-dropdown">
-                  <FaSort className="me-2" />
-                  Trier par
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  <Dropdown.Item onClick={() => requestSort('name')}>
-                    <div className="d-flex align-items-center">
-                      Nom 
-                      {sortConfig.key === 'name' && (
-                        sortConfig.direction === 'asc' ? 
-                          <FaSortUp className="ms-2" /> : 
-                          <FaSortDown className="ms-2" />
-                      )}
+            <div className="d-flex gap-4 w-full justify-content-around space-x-6 ">
+                    <Col md={3}>
+                      <Dropdown>
+                        <Dropdown.Toggle className='!border-persimmon/30 focus:!border-persimmon hover:border-1  !text-persimmon-dark !bg-persimmon/20 focus:!bg-persimmon/25 d-flex align-items-center gap-1  '  id="category-filter">
+                          <FaFilter className=" !w-full" />
+                          {categoryFilter === 'all' ? 'Toutes catégories' : categoryFilter}
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu className='!bg-persimmon border/20 !border-persimmon backdrop-blur-sm' >
+                          <Dropdown.Item className='!text-persimmon' onClick={() => setCategoryFilter('all')}>
+                            Toutes catégories
+                          </Dropdown.Item>
+                          {categories.map(category => (
+                            <Dropdown.Item 
+                              key={category} 
+                              onClick={() => setCategoryFilter(category)}
+                            >
+                              {category}
+                            </Dropdown.Item>
+                          ))}
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    </Col>
+                    <Col md={3}>
+                      <Dropdown>
+                        <Dropdown.Toggle className='!border-persimmon/30 focus:!border-persimmon !text-persimmon-dark !bg-persimmon/20 focus:!bg-persimmon/25 d-flex align-items-center gap-1' id="sort-dropdown">
+                          <FaSort className=" !w-full" />
+                          Trier par
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu className='!bg-white/20 !border-persimmon backdrop-blur-sm' >
+                          <Dropdown.Item className='hover:!bg-permmison' onClick={() => requestSort('name')}>
+                            <div className="d-flex align-items-center text-persimmon">
+                              Nom 
+                              {sortConfig.key === 'name' && (
+                                sortConfig.direction === 'asc' ? 
+                                  <FaSortUp className="ms-2" /> : 
+                                  <FaSortDown className="ms-2" />
+                              )}
+                            </div>
+                          </Dropdown.Item>
+                          <Dropdown.Item onClick={() => requestSort('price')}>
+                            <div className="d-flex align-items-center text-persimmon">
+                              Prix
+                              {sortConfig.key === 'price' && (
+                                sortConfig.direction === 'asc' ? 
+                                  <FaSortUp className="ms-2" /> : 
+                                  <FaSortDown className="ms-2" />
+                              )}
+                            </div>
+                          </Dropdown.Item>
+                          <Dropdown.Item onClick={() => requestSort('stock')}>
+                            <div className="d-flex align-items-center text-persimmon">
+                              Stock
+                              {sortConfig.key === 'stock' && (
+                                sortConfig.direction === 'asc' ? 
+                                  <FaSortUp className="ms-2" /> : 
+                                  <FaSortDown className="ms-2" />
+                              )}
+                            </div>
+                          </Dropdown.Item>
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    </Col>
                     </div>
-                  </Dropdown.Item>
-                  <Dropdown.Item onClick={() => requestSort('price')}>
-                    <div className="d-flex align-items-center">
-                      Prix
-                      {sortConfig.key === 'price' && (
-                        sortConfig.direction === 'asc' ? 
-                          <FaSortUp className="ms-2" /> : 
-                          <FaSortDown className="ms-2" />
-                      )}
-                    </div>
-                  </Dropdown.Item>
-                  <Dropdown.Item onClick={() => requestSort('stock')}>
-                    <div className="d-flex align-items-center">
-                      Stock
-                      {sortConfig.key === 'stock' && (
-                        sortConfig.direction === 'asc' ? 
-                          <FaSortUp className="ms-2" /> : 
-                          <FaSortDown className="ms-2" />
-                      )}
-                    </div>
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-            </Col>
+                </div>
           </Row>
         </Card.Body>
       </Card>
 
       {/* Liste des produits sous forme de tableau moderne */}
       <Card className="shadow-sm border-0">
-        <div className="table-responsive">
-          <table className="table table-hover mb-0">
-            <thead className="table-light">
+        <div className="table-responsive ">
+          <table className="table table-hover !h-70   mb-0">
+            <thead className=" !w-full">
               <tr>
-                <th style={{ width: '30%' }} onClick={() => requestSort('name')}>
+                <th className='!bg-persimmon  rounded-ss-md text-gray-300 text-end' style={{ width: '30%' }} onClick={() => requestSort('name')}>
                   <div className="d-flex align-items-center cursor-pointer">
                     Produit
                     {sortConfig.key === 'name' && (
@@ -241,8 +250,8 @@ const ProductList = () => {
                     )}
                   </div>
                 </th>
-                <th style={{ width: '15%' }} onClick={() => requestSort('category')}>
-                  <div className="d-flex align-items-center cursor-pointer">
+                <th className='!bg-persimmon  text-gray-300 text-end' style={{ width: '15%' }} onClick={() => requestSort('category')}>
+                  <div className="d-flex align-items-center justify-content-center cursor-pointer">
                     Catégorie
                     {sortConfig.key === 'category' && (
                       sortConfig.direction === 'asc' ? 
@@ -251,8 +260,8 @@ const ProductList = () => {
                     )}
                   </div>
                 </th>
-                <th style={{ width: '15%' }} className="text-end" onClick={() => requestSort('price')}>
-                  <div className="d-flex align-items-center justify-content-end cursor-pointer">
+                <th className='!bg-persimmon  text-gray-300 text-end' style={{ width: '15%' }}  onClick={() => requestSort('price')}>
+                  <div className="d-flex align-items-center justify-content-center cursor-pointer">
                     Prix
                     {sortConfig.key === 'price' && (
                       sortConfig.direction === 'asc' ? 
@@ -261,8 +270,8 @@ const ProductList = () => {
                     )}
                   </div>
                 </th>
-                <th style={{ width: '15%' }} className="text-end" onClick={() => requestSort('stock')}>
-                  <div className="d-flex align-items-center justify-content-end cursor-pointer">
+                <th className='!bg-persimmon  text-gray-300 !text-center' style={{ width: '15%' }}  onClick={() => requestSort('stock')}>
+                  <div className="d-flex align-items-center justify-content-center cursor-pointer">
                     Stock
                     {sortConfig.key === 'stock' && (
                       sortConfig.direction === 'asc' ? 
@@ -271,7 +280,7 @@ const ProductList = () => {
                     )}
                   </div>
                 </th>
-                <th style={{ width: '25%' }} className="text-end">
+                <th className='!bg-persimmon  rounded-se-md text-gray-300 text-end' style={{ width: '25%' }} >
                   Actions
                 </th>
               </tr>
@@ -287,53 +296,71 @@ const ProductList = () => {
                 currentItems.map((product) => (
                   <tr key={product.id}>
                     <td>
-                      <div className="d-flex align-items-center">
+                      <div className="d-flex justify-content-start ">
                         <FaBoxOpen className="text-primary me-3" />
                         <strong>{product.name}</strong>
                       </div>
                     </td>
-                    <td>
+                    <td className='flex justify-center border'>
                       <Badge bg="info" className="text-capitalize">
                         {product.category}
                       </Badge>
                     </td>
-                    <td className="text-end">
+                    <td  className='text-center'>
                       {new Intl.NumberFormat('fr-FR', {
                         style: 'currency',
                         currency: 'XOF'
                       }).format(product.price)}
                     </td>
-                    <td className="text-end">
+                    <td className='text-center'>
                       <span className={product.stock <= 5 ? 'text-danger fw-bold' : 'text-success fw-bold'}>
                         {product.stock} {product.unit}
                       </span>
                     </td>
-                    <td className="text-end">
-                      <Button
-                        variant="outline-primary"
-                        size="sm"
-                        as={Link}
-                        to={`/products/${product.id}`}
-                        className="me-2"
-                      >
-                        Détails
-                      </Button>
-                      <Button
-                        variant="outline-warning"
-                        size="sm"
-                        as={Link}
-                        to={`/products/${product.id}/edit`}
-                        className="me-2"
-                      >
-                        Modifier
-                      </Button>
-                      <Button
-                        variant="outline-danger"
-                        size="sm"
-                        onClick={() => onDelete(product.id)}
-                      >
-                        Supprimer
-                      </Button>
+                    <td>
+                    <Dropdown 
+                    className='d-flex justify-content-end '  >
+                        <DropdownToggle
+                            variant='outline-secondary'
+                             className=' d-flex items-center'>
+                          <FaEllipsisH />
+                        </DropdownToggle>
+                        <DropdownMenu className='!bg-transparent backdrop-blur-[3px] !border-persimmon '>
+                            <DropdownItemText className='d-flex'>
+                                  <Button
+                                    variant="outline-primary"
+                                    size="sm"
+                                    as={Link}
+                                    to={`/products/${product.id}`}
+                                    className=" !w-full"
+                                  >
+                                    Détails
+                                  </Button>
+                            </DropdownItemText>
+                            <DropdownItemText className='d-flex'>
+                                  <Button
+                                    variant="outline-warning"
+                                    size="sm"
+                                    as={Link}
+                                    to={`/products/${product.id}/edit`}
+                                    className=" !w-full"
+                                  >
+                                    Modifier
+                                  </Button>
+
+                            </DropdownItemText>
+                            <DropdownItemText className='d-flex'>
+                                  <Button
+                                    variant="outline-danger"
+                                    size="sm"
+                                    className='!w-full'
+                                    // onClick={() => onDelete(product.id)}
+                                  >
+                                    Supprimer
+                                  </Button>
+                            </DropdownItemText>
+                        </DropdownMenu>
+                    </Dropdown>
                     </td>
                   </tr>
                 ))
