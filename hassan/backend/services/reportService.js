@@ -315,6 +315,7 @@
 import PDFDocument from 'pdfkit';
 import fs from 'fs';
 import path from 'path';
+import { body ,  query , validationResult } from 'express-validator';
 
 export const generateDailyReport = async (date, salesData, dailyTotal) => {
   const doc = new PDFDocument({ margin: 50, size: 'A4' });
@@ -426,3 +427,12 @@ export const generateMonthlyReport = async (year, month, salesData, monthlyTotal
   doc.end();
   return reportPath;
 };
+export const validateDailyReport = [
+  query('date').isISO8601().withMessage('La date doit être au format YYYY-MM-DD')
+];
+
+// Validation middleware pour les rapports mensuels
+export const validateMonthlyReport = [
+  query('year').isInt({ min: 2000, max: 2100 }).withMessage('L\'année doit être entre 2000 et 2100'),
+  query('month').isInt({ min: 1, max: 12 }).withMessage('Le mois doit être entre 1 et 12')
+];

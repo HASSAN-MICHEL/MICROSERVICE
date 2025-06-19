@@ -94,8 +94,10 @@ const Sidebar = () => {
               <li className="my-3">
                 <small className="text-white-50 fw-bold">RAPPORTS</small>
               </li>
+              
             )}
             
+     
             <NavItem 
               to="/reports/daily" 
               icon={<FaChartLine />} 
@@ -103,6 +105,7 @@ const Sidebar = () => {
               active={isActive('/reports/daily')} 
               collapsed={collapsed}
             />
+
             
             <NavItem 
               to="/reports/stock" 

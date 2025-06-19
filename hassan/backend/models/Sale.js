@@ -256,6 +256,23 @@ class Sale {
 
   return rows[0]?.daily_total || 0;
 }
+static async verifySalesExist(date) {
+  const query = `
+    SELECT 
+      COUNT(s.id) as sales_count,
+      COUNT(si.id) as items_count
+    FROM sales s
+    LEFT JOIN sale_items si ON s.id = si.sale_id AND si.status = 'confirmed'
+    WHERE s.status = 'confirmed'
+    AND DATE(s.confirmed_at AT TIME ZONE 'UTC') = $1
+  `;
+  
+  const { rows } = await pool.query(query, [date]);
+  return {
+    hasSales: rows[0].sales_count > 0,
+    hasItems: rows[0].items_count > 0
+  };
+}
 
 static async getMonthlyTotal(year, month) {
   const { rows } = await pool.query(`
@@ -267,6 +284,18 @@ static async getMonthlyTotal(year, month) {
   `, [year, month]);
 
   return rows[0]?.monthly_total || 0;
+}
+
+static async getDailySalesCount(date) {
+  const { rows } = await pool.query(`
+    SELECT COUNT(DISTINCT s.id) 
+    FROM sales s
+    JOIN sale_items si ON s.id = si.sale_id
+    WHERE si.status = 'confirmed'
+    AND DATE(s.confirmed_at) = $1
+  `, [date]);
+  
+  return parseInt(rows[0].count);
 }
 }
 

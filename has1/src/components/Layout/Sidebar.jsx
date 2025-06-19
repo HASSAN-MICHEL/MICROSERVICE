@@ -1,126 +1,181 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FaHome, FaBoxes, FaShoppingCart, FaChartLine, FaCog, FaUsers , Fasun } from 'react-icons/fa';
+import { 
+  FaHome, FaBoxes, FaShoppingCart, FaChartLine, 
+  FaCog, FaUsers, FaSun, FaSignOutAlt, FaBars, FaTimes
+} from 'react-icons/fa';
 
 const Sidebar = () => {
   const location = useLocation();
+  const [collapsed, setCollapsed] = useState(false);
+  const [mobileShow, setMobileShow] = useState(false);
 
-  // Détermine si un lien est actif
   const isActive = (path) => {
-    return location.pathname.includes(path);
+    return location.pathname === path || location.pathname.includes(path);
+  };
+
+  const toggleCollapse = () => {
+    setCollapsed(!collapsed);
+  };
+
+  const toggleMobile = () => {
+    setMobileShow(!mobileShow);
   };
 
   return (
-    <div className="bg-white text-blue-900 w-64 min-h-screen border-r border-gray-200 shadow-sm hidden md:block">
-      <div className="p-4">
-        <div className="flex items-center space-x-2 p-4 mb-6">
-          <FaSun className="h-6 w-6 text-yellow-400" />
-          <span className="text-xl font-bold">SunStore</span>
+    <>
+      {/* Bouton mobile */}
+      <button 
+        className="d-md-none btn btn-primary position-fixed"
+        style={{
+          zIndex: 1100,
+          bottom: '20px',
+          right: '20px',
+          width: '50px',
+          height: '50px',
+          borderRadius: '50%'
+        }}
+        onClick={toggleMobile}
+      >
+        {mobileShow ? <FaTimes /> : <FaBars />}
+      </button>
+
+      {/* Sidebar */}
+      <div 
+        className={`bg-primary text-white d-flex flex-column flex-shrink-0 p-3 sidebar ${collapsed ? 'collapsed' : ''} ${mobileShow ? 'show' : ''}`}
+        style={{height: ''}}
+      >
+        {/* Logo et bouton de collapse */}
+        <div className="d-flex align-items-center justify-content-between mb-4 p-2">
+          {!collapsed && (
+            <div className="d-flex align-items-center">
+              <FaSun className="fs-3 me-2 text-warning" />
+              <span className="fs-4 fw-bold">Drink Manage</span>
+            </div>
+          )}
+          {collapsed && <FaSun className="fs-3 text-warning mx-auto" />}
+          <button 
+            className="btn btn-link text-white d-none d-md-block p-0"
+            onClick={toggleCollapse}
+          >
+            {collapsed ? <FaBars /> : <FaTimes />}
+          </button>
         </div>
 
-        <nav className="mt-6">
-          <div className="space-y-1">
-            <Link
-              to="/"
-              className={`flex items-center px-4 py-3 text-sm font-medium rounded-lg transition duration-300 ${
-                isActive('/') ? 'bg-blue-100 text-blue-700' : 'hover:bg-blue-50'
-              }`}
-            >
-              <FaHome className="mr-3 text-lg" />
-              Tableau de bord
-            </Link>
+        {/* Navigation */}
+        <nav className="flex-grow-1 overflow-auto">
+          <ul className="nav nav-pills flex-column mb-auto">
+            <NavItem 
+              to="/" 
+              icon={<FaHome />} 
+              label="Tableau de bord" 
+              active={isActive('/')} 
+              collapsed={collapsed}
+            />
+            
+            <NavItem 
+              to="/secretariat" 
+              icon={<FaBoxes />} 
+              label="Gestion des produits" 
+              active={isActive('/secretariat')} 
+              collapsed={collapsed}
+            />
+            
+            <NavItem 
+              to="/sales" 
+              icon={<FaShoppingCart />} 
+              label="Gestion des ventes" 
+              active={isActive('/sales')} 
+              collapsed={collapsed}
+            />
 
-            <Link
-              to="/products"
-              className={`flex items-center px-4 py-3 text-sm font-medium rounded-lg transition duration-300 ${
-                isActive('/products') ? 'bg-blue-100 text-blue-700' : 'hover:bg-blue-50'
-              }`}
-            >
-              <FaBoxes className="mr-3 text-lg" />
-              Gestion des produits
-            </Link>
+            {/* Section Rapports */}
+            {!collapsed && (
+              <li className="my-3">
+                <small className="text-white-50 fw-bold">RAPPORTS</small>
+              </li>
+              
+            )}
+            
+     
+            <NavItem 
+              to="/reports/daily" 
+              icon={<FaChartLine />} 
+              label="Rapport quotidien" 
+              active={isActive('/reports/daily')} 
+              collapsed={collapsed}
+            />
 
-            <Link
-              to="/sales"
-              className={`flex items-center px-4 py-3 text-sm font-medium rounded-lg transition duration-300 ${
-                isActive('/sales') ? 'bg-blue-100 text-blue-700' : 'hover:bg-blue-50'
-              }`}
-            >
-              <FaShoppingCart className="mr-3 text-lg" />
-              Gestion des ventes
-            </Link>
+            
+            <NavItem 
+              to="/reports/stock" 
+              icon={<FaBoxes />} 
+              label="Niveau de stock" 
+              active={isActive('/reports/stock')} 
+              collapsed={collapsed}
+            />
 
-            <div className="pt-2">
-              <p className="px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                Rapports
-              </p>
-              <div className="mt-1 space-y-1">
-                <Link
-                  to="/reports/daily"
-                  className={`flex items-center px-4 py-3 text-sm font-medium rounded-lg transition duration-300 ${
-                    isActive('/reports/daily') ? 'bg-blue-100 text-blue-700' : 'hover:bg-blue-50'
-                  }`}
-                >
-                  <FaChartLine className="mr-3 text-lg" />
-                  Rapport quotidien
-                </Link>
-
-                <Link
-                  to="/reports/stock"
-                  className={`flex items-center px-4 py-3 text-sm font-medium rounded-lg transition duration-300 ${
-                    isActive('/reports/stock') ? 'bg-blue-100 text-blue-700' : 'hover:bg-blue-50'
-                  }`}
-                >
-                  <FaBoxes className="mr-3 text-lg" />
-                  Niveau de stock
-                </Link>
-              </div>
-            </div>
-
-            <div className="pt-2">
-              <p className="px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                Administration
-              </p>
-              <div className="mt-1 space-y-1">
-                <Link
-                  to="/settings"
-                  className={`flex items-center px-4 py-3 text-sm font-medium rounded-lg transition duration-300 ${
-                    isActive('/settings') ? 'bg-blue-100 text-blue-700' : 'hover:bg-blue-50'
-                  }`}
-                >
-                  <FaCog className="mr-3 text-lg" />
-                  Paramètres
-                </Link>
-
-                <Link
-                  to="/users"
-                  className={`flex items-center px-4 py-3 text-sm font-medium rounded-lg transition duration-300 ${
-                    isActive('/users') ? 'bg-blue-100 text-blue-700' : 'hover:bg-blue-50'
-                  }`}
-                >
-                  <FaUsers className="mr-3 text-lg" />
-                  Utilisateurs
-                </Link>
-              </div>
-            </div>
-          </div>
+            {/* Section Admin */}
+            {!collapsed && (
+              <li className="my-3">
+                <small className="text-white-50 fw-bold">ADMINISTRATION</small>
+              </li>
+            )}
+            
+            <NavItem 
+              to="/settings" 
+              icon={<FaCog />} 
+              label="Paramètres" 
+              active={isActive('/settings')} 
+              collapsed={collapsed}
+            />
+            
+            <NavItem 
+              to="/users" 
+              icon={<FaUsers />} 
+              label="Utilisateurs" 
+              active={isActive('/users')} 
+              collapsed={collapsed}
+            />
+          </ul>
         </nav>
-      </div>
 
-      {/* Pied de page de la sidebar */}
-      <div className="absolute bottom-0 w-full p-4 border-t border-gray-200">
-        <div className="flex items-center">
-          <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
-            <span className="text-blue-600 font-bold">HS</span>
-          </div>
-          <div className="ml-3">
-            <p className="text-sm font-medium text-gray-900">Hassan</p>
-            <p className="text-xs text-gray-500">Administrateur</p>
+        {/* Profil utilisateur */}
+        <div className="border-top pt-3 mt-auto">
+          <div className="d-flex align-items-center">
+            <div className="rounded-circle bg-info d-flex align-items-center justify-content-center" 
+              style={{width: collapsed ? '40px' : '40px', height: '40px'}}>
+              <span className="fw-bold text-white">DB</span>
+            </div>
+            {!collapsed && (
+              <div className="ms-3">
+                <p className="mb-0 fw-bold text-white">Debit Boissons</p>
+                <p className="mb-0 small text-white-50">Administrateur</p>
+              </div>
+            )}
+            {!collapsed && (
+              <button className="btn btn-link text-white ms-auto p-0">
+                <FaSignOutAlt />
+              </button>
+            )}
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
+
+const NavItem = ({ to, icon, label, active, collapsed }) => (
+  <li className="nav-item mb-2">
+    <Link
+      to={to}
+      className={`nav-link d-flex align-items-center ${active ? 'bg-white text-primary' : 'text-white hover-bg-dark'}`}
+      title={collapsed ? label : ''}
+    >
+      <span className="me-3">{icon}</span>
+      {!collapsed && <span>{label}</span>}
+    </Link>
+  </li>
+);
 
 export default Sidebar;

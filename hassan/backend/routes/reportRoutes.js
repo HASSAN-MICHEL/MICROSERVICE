@@ -1,5 +1,5 @@
 import express from 'express';
-import { getDailyReport, getStockReport  , getDayReport ,  downloadMonthlyReport  , getMonthlySalesReport,downloadDailyReport,} from '../controllers/reportController.js';
+import { getDailyReport,  validateDailyReport,  validateMonthlyReport ,  getStockReport  ,  getDailySalesReport, getDayReport ,  downloadMonthlyReport  , getMonthlySalesReport,downloadDailyReport,} from '../controllers/reportController.js';
 
 const router = express.Router();
 
@@ -10,5 +10,11 @@ router.get('/day', getDayReport);
 router.get('/monthly', getMonthlySalesReport);
 router.get('/daily/download', downloadDailyReport);
 router.get('/monthly/download', downloadMonthlyReport);
+
+// Dans votre fichier de routes
+router.get('/sales/daily', validateDailyReport, getDailySalesReport);
+router.get('/sales/daily/download', validateDailyReport, downloadDailyReport);
+router.get('/sales/monthly', validateMonthlyReport, getMonthlySalesReport);
+router.get('/sales/monthly/download', validateMonthlyReport, downloadMonthlyReport);
 
 export default router;
