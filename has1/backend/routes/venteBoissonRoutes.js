@@ -53,3 +53,6 @@ router.get("/statistiques/tendances-ventes", venteBoissonController.getSalesTren
 router.get("/rapports/download/:type", venteBoissonController.downloadReportPDF);
 
 export default router;
+
+
+

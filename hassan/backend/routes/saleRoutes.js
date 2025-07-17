@@ -72,9 +72,9 @@ import {
   confirmSale,
   cancelSale,
   updateSaleItems,
-  getSaleDetails,
-  getAllSales,
-  downloadInvoice
+  getSaleDetails, 
+  getAllSales, updatedeSale ,
+  downloadInvoice 
 } from '../controllers/saleController.js';
 
 const router = express.Router();
@@ -85,6 +85,6 @@ router.get('/:id', getSaleDetails);
 router.get('/:id/invoice', downloadInvoice); // Nouvelle route pour le téléchargement
 router.put('/:id/confirm', confirmSale);
 router.put('/:id/cancel', cancelSale);
-router.put('/:id/items', updateSaleItems);
+router.put('/:id/items',  updatedeSale );
 
 export default router;

@@ -1,122 +1,69 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { 
-  FaBars, FaTimes, FaShoppingCart, 
-  FaChartLine, FaBoxes, FaHome, FaSun,
-  FaBell, FaSearch, FaUserCircle
-} from 'react-icons/fa';
+import { useState } from "react";
+import { useLocation } from "react-router-dom";
+import { FaBars, FaBell, FaSearch } from "react-icons/fa";
+import PropTypes from "prop-types";
 
 const Navbar = ({ toggleSidebar }) => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
   const [searchOpen, setSearchOpen] = useState(false);
+  const toggleSearch = () => setSearchOpen(!searchOpen);
 
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
+  // Define page titles based on routes
+  const pageTitles = {
+    "/": "Accueil",
+    "/products": "Produits",
+    "/sales": "Ventes",
+    "/reports/daily": "Rapports",
+    "/reports/stock": "Stock",
+    "/profile": "Profil",
+    "/settings": "Paramètres",
+    "/users" : "Users" , 
   };
 
-  const toggleSearch = () => {
-    setSearchOpen(!searchOpen);
-  };
+  const activePageTitle = pageTitles[location.pathname] || "Hotel App";
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm sticky-top">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-primary !pl-4 rounded-sm absolute shadow-md w-full z-2">
       <div className="container-fluid">
-        {/* Bouton sidebar et logo */}
-        <button 
-          className="navbar-toggler me-2 d-lg-none" 
-          type="button" 
-          onClick={toggleMobileMenu}
-        >
-          {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
-        </button>
-        
-        <button 
-          className="navbar-toggler me-2 d-none d-lg-block" 
-          type="button"
-          onClick={toggleSidebar}
-        >
-          <FaBars />
-        </button>
-        
-        <Link to="/" className="navbar-brand d-flex align-items-center">
-          <FaSun className="text-warning me-2" />
-          <span>Drink Manage</span>
-        </Link>
+        {/* Sidebar toggle button for mobile */}
+      <button className="navbar-toggler me-2 d-lg-none" type="button" onClick={toggleSidebar}>
+        <FaBars />
+      </button>
 
-        {/* Barre de recherche */}
-        
-        {/* Menu principal */}
-        <div className="collapse navbar-collapse">
-         
+        {/* Active Page Title */}
+        <span className="navbar-brand pl-3 text-white fw-bold">{activePageTitle}</span>
 
-          {/* Menu utilisateur */}
-          <div className="d-flex align-items-center ms-auto">
-            <button 
-              className="btn btn-link text-white d-lg-none" 
+        {/* Search and Notifications */}
+        <div className="d-flex flex-row-reverse align-items-center ms-auto gap-4">
+          {/* Search Input */}
+          <div className="flex bg-gray-200 rounded-sm overflow-hidden">
+            <input
+              type="search"
+              placeholder="Hotel app..."
+              className="px-2 py-1 outline-0 placeholder-gray-400 border-0 bg-gray-200"
+            />
+            <button
+              className="btn btn-link bg-secondary text-white rounded-0"
               onClick={toggleSearch}
             >
               <FaSearch />
             </button>
-            
-            <button className="btn btn-link text-white position-relative me-3">
-              <FaBell />
-              <span className="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
-            </button>
-            
-            <div className="dropdown">
-              <button 
-                className="btn btn-link text-white dropdown-toggle d-flex align-items-center" 
-                data-bs-toggle="dropdown"
-              >
-                <div className="rounded-circle bg-info d-flex align-items-center justify-content-center me-2" style={{width: '32px', height: '32px'}}>
-                  <span className="fw-bold text-white small">DB</span>
-                </div>
-                <span className="d-none d-lg-inline">Debit Boissons</span>
-              </button>
-              <ul className="dropdown-menu dropdown-menu-end">
-                <li><Link className="dropdown-item" to="/profile">Profil</Link></li>
-                <li><Link className="dropdown-item" to="/settings">Paramètres</Link></li>
-                <li><hr className="dropdown-divider" /></li>
-                <li><Link className="dropdown-item" to="/logout">Déconnexion</Link></li>
-              </ul>
-            </div>
           </div>
-        </div>
-      </div>
 
-      {/* Menu mobile */}
-      <div className={`collapse navbar-collapse bg-primary mobile-menu ${isMobileMenuOpen ? 'show' : ''}`}>
-        <ul className="navbar-nav">
-          <MobileNavLink to="/" icon={<FaHome />} label="Accueil" toggle={toggleMobileMenu} />
-          <MobileNavLink to="/products" icon={<FaBoxes />} label="Produits" toggle={toggleMobileMenu} />
-          <MobileNavLink to="/sales" icon={<FaShoppingCart />} label="Ventes" toggle={toggleMobileMenu} />
-          <MobileNavLink to="/reports/daily" icon={<FaChartLine />} label="Rapports" toggle={toggleMobileMenu} />
-        </ul>
+          {/* Notification Icon */}
+          <button className="btn btn-link text-white position-relative me-3">
+            <FaBell />
+            <span className="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
+          </button>
+        </div>
       </div>
     </nav>
   );
 };
 
-const NavLink = ({ to, icon, label }) => (
-  <li className="nav-item">
-    <Link to={to} className="nav-link d-flex align-items-center">
-      <span className="me-1">{icon}</span>
-      <span>{label}</span>
-    </Link>
-  </li>
-);
-
-const MobileNavLink = ({ to, icon, label, toggle }) => (
-  <li className="nav-item">
-    <Link 
-      to={to} 
-      className="nav-link d-flex align-items-center py-3"
-      onClick={toggle}
-    >
-      <span className="me-3 fs-5">{icon}</span>
-      <span className="fs-5">{label}</span>
-    </Link>
-  </li>
-);
+Navbar.propTypes = {
+  toggleSidebar: PropTypes.func.isRequired,
+  isSidebarOpen: PropTypes.bool.isRequired,
+};
 
 export default Navbar;

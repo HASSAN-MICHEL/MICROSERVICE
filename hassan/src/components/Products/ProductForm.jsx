@@ -24,7 +24,7 @@ const ProductForm = () => {
           const response = await api.get(`/products/${id}`);
           setProduct(response.data);
         } catch (error) {
-          console.error('Error fetching product:', error);
+          console.error('Erreur de chargement des  produits:', error);
         }
       };
       fetchProduct();
@@ -47,7 +47,7 @@ const ProductForm = () => {
       fetchProducts();
       navigate('/products');
     } catch (error) {
-      console.error('Error saving product:', error);
+      console.error('Erreur de sauvegarde de  produit:', error);
     }
   };
 

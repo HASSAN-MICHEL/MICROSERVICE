@@ -21,14 +21,19 @@ const DailyReport = () => {
   };
 
   return (
-    <div>
-      <h1>Daily Report</h1>
-      <div className="form-group">
-        <label>Date</label>
+    <div className='!border'>
+      <h1 className='!mb-4'>Daily Report</h1>
+      <div className="form-group flex !mt-5 "
+        style={{ display: 'flex', alignItems: 'center', gap: '10px' }}
+      >
+        <label >Date</label>
         <input
           type="date"
           value={date}
           onChange={handleDateChange}
+          className='!border !border-gray-300 !rounded-md !p-2'
+          style={{ width: '200px' }}
+
         />
         <button onClick={generateReport} className="btn btn-primary">
           Generate

@@ -77,6 +77,7 @@ const SaleList = () => {
             variant="primary" 
             className="ms-2"
             onClick={() => setShowSaleForm(true)}
+            
           >
             <FaPlus className="me-2" />
             Nouvelle Vente

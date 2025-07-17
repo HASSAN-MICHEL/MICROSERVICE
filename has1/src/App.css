@@ -1,42 +1,308 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+:root {
+  --sidebar-width: 250px;
+  --sidebar-collapsed-width: 80px;
+  --header-height: 60px;
+  --primary-color: #4e73df;
+  --transition-speed: 0.3s;
+}
+
+/* Structure de base */
+.app-container {
+  display: flex;
+  min-height: 100vh;
+  position: relative;
+  transition: all var(--transition-speed) ease;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+  background-color: #f5f7fa;
+  min-height: calc(100vh - var(--header-height));
+  margin-left: var(--sidebar-width);
+  transition: margin-left var(--transition-speed) ease;
+}
+
+/* Styles pour la sidebar réduite */
+.app-container.sidebar-collapsed .main-content {
+  margin-left: var(--sidebar-collapsed-width);
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .main-content {
+    margin-left: 0;
+    padding-top: var(--header-height);
+  }
+
+  .app-container.sidebar-collapsed .main-content {
+    margin-left: 0;
+  }
+
+  .sidebar-toggle-btn {
+    display: block;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 1050;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+}
+
+@media (min-width: 993px) {
+  .sidebar-toggle-btn {
+    display: none;
+  }
+}
+
+/* Pour les très petits écrans */
+@media (max-width: 576px) {
+  .main-content {
+    padding: 15px 10px;
+  }
+}
+
+/* Améliorations pour les tablettes */
+@media (min-width: 577px) and (max-width: 992px) {
+  .main-content {
+    padding: 20px 15px;
+  }
+}
+
+/* Animation des pages */
+.page-transition {
+  position: relative;
+}
+
+.page-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 300ms ease-in;
+}
+
+.page-exit {
+  opacity: 1;
+}
+
+.page-exit-active {
+  opacity: 0;
+  transition: all 300ms ease-out;
+}
+
+/* Améliorations pour les cartes et contenus */
+.card {
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+/* Optimisation des formulaires */
+.form-control, .form-select {
+  padding: 10px 15px;
+  border-radius: 6px;
+}
+
+.btn {
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+/* Gestion du thème sombre */
+[data-theme="dark"] {
+  --bg-color: #212529;
+  --text-color: #f8f9fa;
+  --card-bg: #2c3034;
+}
+
+[data-theme="dark"] .main-content {
+  background-color: #1a1d20;
+}
+
+[data-theme="dark"] .card {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+ /* Sidebar styles */
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background-color: #fff;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  transition: all 0.3s ease;
+  overflow-x: hidden;
+}
+
+.sidebar.collapsed {
+  width: 80px;
+}
+
+.sidebar.mobile {
+  transform: translateX(-100%);
+}
+
+.sidebar.mobile.show {
+  transform: translateX(0);
+}
+
+.sidebar-header {
+  padding: 20px;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+  position: relative;
+}
+
+.sidebar-logo {
+  height: 40px;
+  margin-bottom: 10px;
+}
+
+.sidebar-header h4 {
+  color: #4e73df;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.sidebar-toggle {
+  position: absolute;
+  top: 50%;
+  right: -15px;
+  transform: translateY(-50%);
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: all 0.3s;
+}
+
+.sidebar-toggle:hover {
+  background: #f8f9fa;
+}
+
+.sidebar-item {
+  margin: 5px 10px;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  padding: 12px 15px;
+  color: #6c757d;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+
+.sidebar-link:hover {
+  background-color: #f8f9fa;
+  color: #4e73df;
+}
+
+.sidebar-link.active {
+  background-color: #4e73df;
+  color: white;
+}
+
+.sidebar-icon {
+  margin-right: 10px;
+  width: 24px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.sidebar.collapsed .sidebar-icon {
+  margin-right: 0;
+  font-size: 1.3rem;
+}
+
+.sidebar-text {
+  font-size: 0.9rem;
+  transition: opacity 0.3s;
+}
+
+.sidebar.collapsed .sidebar-text {
+  display: none;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 15px;
+  border-top: 1px solid #eee;
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+/* Mobile specific styles */
+@media (max-width: 992px) {
+  .sidebar {
+    transform: translateX(-100%);
+    z-index: 1050;
   }
-  to {
-    transform: rotate(360deg);
+  
+  .sidebar.show {
+    transform: translateX(0);
+  }
+  
+  .sidebar-header {
+    padding-top: 60px;
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* Dark mode support */
+[data-theme="dark"] .sidebar {
+  background-color: #2c3034;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
 }
 
-.card {
-  padding: 2em;
+[data-theme="dark"] .sidebar-header {
+  border-bottom-color: #3d4348;
 }
 
-.read-the-docs {
-  color: #888;
+[data-theme="dark"] .sidebar-link {
+  color: #adb5bd;
+}
+
+[data-theme="dark"] .sidebar-link:hover {
+  background-color: #3d4348;
+  color: #fff;
+}
+
+[data-theme="dark"] .sidebar-link.active {
+  background-color: #4e73df;
+  color: white;
+}
+
+[data-theme="dark"] .sidebar-footer {
+  border-top-color: #3d4348;
 }

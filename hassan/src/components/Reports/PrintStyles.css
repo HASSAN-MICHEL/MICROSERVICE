@@ -1,0 +1,53 @@
+/* PrintStyles.css
+@media print {
+  body * {
+    visibility: hidden;
+    background-color: antiquewhite;
+  }
+  .print-container, 
+  .print-container * {
+    visibility: visible;
+  }
+  .print-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    padding: 20px;
+  }
+  .print-container button {
+    display: none !important;
+  }
+} */
+
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .print-container, 
+  .print-container * {
+    visibility: visible;
+  }
+  .print-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    padding: 20px;
+    background: white;
+    color: black;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  th, td {
+    border: 1px solid #e5e7eb;
+    padding: 8px;
+    text-align: left;
+  }
+  th {
+    background-color: #f9fafb;
+  }
+}

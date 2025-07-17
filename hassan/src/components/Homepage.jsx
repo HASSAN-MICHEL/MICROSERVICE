@@ -442,6 +442,8 @@
 
 // export default Homepage;
 
+
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -452,8 +454,8 @@ import { MdInfo } from "react-icons/md";
 
 // Configuration dynamique de l'URL de base (identique à boisson.jsx)
 const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '192.168.52.216'
-  ? "http://localhost:5000"
-  : `http://${window.location.hostname}:5000`;
+  ? "http://localhost:4000"
+  : `http://${window.location.hostname}:4000`;
 
 axios.defaults.baseURL = API_BASE_URL;
 

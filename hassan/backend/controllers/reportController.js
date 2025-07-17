@@ -26,7 +26,8 @@ export const getDailyReport = async (req, res) => {
 
     // Get stock movements
     const stockQuery = `
-      SELECT 
+      
+ SELECT 
         p.id as product_id,
         p.name as product_name,
         COALESCE((
@@ -44,8 +45,9 @@ export const getDailyReport = async (req, res) => {
           WHERE si.product_id = p.id 
           AND si.status = 'cancelled'
           AND DATE(s.created_at) = $1
-        ), 0) as returned_quantity
+        ), 0) as returned_quantity , p.stock as disponible
       FROM products p
+
     `;
     const { rows: stockMovements } = await pool.query(stockQuery, [date]);
 
@@ -207,6 +209,8 @@ export const getDailySalesReport = async (req, res) => {
     });
   }
 };
+
+
 // export const getMonthlySalesReport = async (req, res) => {
 //   try {
 //     const { year, month } = req.query;
@@ -732,5 +736,42 @@ export const downloadMonthlyReport = async (req, res) => {
 //       error: 'Erreur lors de la génération du rapport de stock',
 //       details: error.message
 //     });
-//   }
-// };
+// //   }
+// // };
+
+
+
+//   // Get sales for the day
+//     const salesQuery = `
+//       SELECT * FROM sales 
+//       WHERE DATE(created_at) = $1
+//       ORDER BY created_at DESC
+//     `;
+//     const { rows: sales } = await pool.query(salesQuery, [date]);
+
+//     // Get stock movements
+//     const stockQuery = `
+//       // SELECT 
+//       //   p.id as product_id,
+//       //   p.name as product_name,
+//       //   COALESCE((
+//       //     SELECT SUM(si.quantity) 
+//       //     FROM sale_items si
+//       //     JOIN sales s ON si.sale_id = s.id
+//       //     WHERE si.product_id = p.id 
+//       //     AND si.status != 'cancelled'
+//       //     AND DATE(s.created_at) = $1
+//       //   ), 0) as sold_quantity,
+//       //   COALESCE((
+//       //     SELECT SUM(si.quantity) 
+//       //     FROM sale_items si
+//       //     JOIN sales s ON si.sale_id = s.id
+//       //     WHERE si.product_id = p.id 
+//       //     AND si.status = 'cancelled'
+//       //     AND DATE(s.created_at) = $1
+//       //   ), 0) as returned_quantity
+//       // FROM products p
+
+      
+//     `;
+//     const { rows: stockMovements } = await pool.query(stockQuery, [date]);

@@ -681,9 +681,20 @@ import {
 } from "react-icons/fi";
 
 // Création d'une instance axios spécifique pour ce composant
+// const apiVenteBoissons = axios.create({
+//   baseURL: "http://localhost:4000/api/vente-boissons"
+// });
+
+
+const API_BASE_URL = window.location.hostname === 'localhost'
+  ? 'http://192.168.52.216:4000'
+  : `http://${window.location.hostname}:4000`;
+
 const apiVenteBoissons = axios.create({
-  baseURL: "http://localhost:4000/api/vente-boissons"
+  baseURL: `${API_BASE_URL}/api/vente-boissons`,
+  withCredentials: true
 });
+
 
 const RapportVente = () => {
   // États

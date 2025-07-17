@@ -1,5 +1,23 @@
-import React from 'react';
+import React  , { useState}from 'react';
 import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
+import api from '../../services/api.js';
+
+  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+  const [report, setReport] = useState(null);
+
+    const handleDateChange = (e) => {
+    setDate(e.target.value);
+  };
+
+  const generateReport = async () => {
+    try {
+      const response = await api.get(`/reports/daily?date=${date}`);
+      setReport(response.data);
+    } catch (error) {
+      console.error('Error generating report:', error);
+    }
+  };
+
 
 const styles = StyleSheet.create({
   page: {
